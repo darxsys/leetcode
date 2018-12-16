@@ -37,7 +37,18 @@ public:
 
 	        if (i == 0)
 	        {
-	            if (sum_all % 2) return B[j-1];
+
+                if (A[i] < B[j-1])
+                {
+                    j /= 2;
+                    i = (sum_all - 2 * j + sum_all % 2) / 2;
+                    continue;
+                }
+
+	            if (sum_all % 2) 
+                    {
+                        return B[j-1];
+                    }
 	            else
 	            {
 	                if (j == n)
@@ -53,6 +64,13 @@ public:
 	        
 	        if (j == 0)
 	        {
+                if (B[j] < A[i-1])
+                {
+                    i = i/2;
+                    j = (sum_all - 2 * i + sum_all % 2) / 2;
+                    continue;
+                }
+
 	            if (sum_all % 2) return A[i-1];
 	            else
 	            {
@@ -69,29 +87,47 @@ public:
 	        
 	        if (i == m)
 	        {
+                if (A[i-1] > B[j])
+                {
+                    i = i/2;
+                    j = (sum_all - 2 * i + sum_all % 2) / 2;
+                    continue;                    
+                }
+
 	            if (sum_all % 2) return max(A[i-1], B[j-1]);
 	            else return (max(A[i-1], B[j-1]) + B[j]) / 2.;
 	        }
 	        
 	        if (j == n)
 	        {
+                if (B[j-1] > A[i])
+                {
+                    j /= 2;
+                    i = (sum_all - 2 * j + sum_all % 2) / 2;
+                    continue;
+                }
+
 	            if (sum_all % 2) return max(A[i-1], B[j-1]);
 	            else return (max(A[i-1], B[j-1]) + A[i]) / 2.;
 	        }
 
-	        if (sum_all % 2) return max(nums1[i-1], nums2[j-1]);     
-	        return (max(nums1[i-1], nums2[j-1]) + min(nums1[i], nums2[j])) / 2.;
-
-        
-            if (j < n && i > 0 && nums1[i-1] > nums2[j])
+            if (A[i-1] <= B[j] && B[j-1] <= A[i])
             {
-                i = i/2+1;
-                j = (sum_all - 2 * i + sum_all % 2) / 2;
+    	        if (sum_all % 2) return max(nums1[i-1], nums2[j-1]);     
+    	        return (max(nums1[i-1], nums2[j-1]) + min(nums1[i], nums2[j])) / 2.;
             }
-            else if (j > 0 && i < m && nums2[j-1] > nums1[i])
+            else
             {
-                j = j/2;
-                i = (sum_all - 2 * j + sum_all % 2) / 2;
+                if (nums1[i-1] > nums2[j])
+                {
+                    i = i/2+1;
+                    j = (sum_all - 2 * i + sum_all % 2) / 2;
+                }
+                else if (nums2[j-1] > nums1[i])
+                {
+                    j = j/2;
+                    i = (sum_all - 2 * j + sum_all % 2) / 2;
+                }
             }
         } while (true);   
 
@@ -117,6 +153,38 @@ private:
 int main(void)
 {
     Solution s;
+    int num_tests;
+    scanf("%d", &num_tests);
+
+    while (num_tests)
+    {
+        int m, n;
+        scanf("%d %d", &m, &n);
+
+        vector<int> v1;
+        vector<int> v2;
+
+        for (int i = 0; i < m; ++i)
+        {
+            int a;
+            scanf("%d", &a);
+            v1.push_back(a);
+        }
+
+        for (int i = 0; i < n; ++i)
+        {
+            int a;
+            scanf("%d", &a);
+            v2.push_back(a);
+        }
+
+        double solution;
+        scanf("%lf", &solution);
+
+        printf("expected %lf, actual %lf\n", solution, s.findMedianSortedArrays(v1, v2));
+
+        num_tests--;
+    }
     
     vector<int> v({2, 3, 5});
     vector<int> v2({1, 4});
