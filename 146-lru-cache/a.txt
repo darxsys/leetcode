@@ -1,0 +1,47 @@
+solution.cpp:75:21: error: ‘Node’ has not been declared
+     void putToFront(Node *cur)
+                     ^~~~
+solution.cpp: In member function ‘int LRUCache::get(int)’:
+solution.cpp:28:30: error: no matching function for call to ‘LRUCache::putToFront(LRUCache::Node*&)’
+         putToFront(it->second);
+                              ^
+solution.cpp:75:10: note: candidate: void LRUCache::putToFront(int*)
+     void putToFront(Node *cur)
+          ^~~~~~~~~~
+solution.cpp:75:10: note:   no known conversion for argument 1 from ‘LRUCache::Node*’ to ‘int*’
+solution.cpp: In member function ‘void LRUCache::put(int, int)’:
+solution.cpp:53:27: error: no matching function for call to ‘LRUCache::putToFront(std::pair<const int, LRUCache::Node*>&)’
+             putToFront(*it);
+                           ^
+solution.cpp:75:10: note: candidate: void LRUCache::putToFront(int*)
+     void putToFront(Node *cur)
+          ^~~~~~~~~~
+solution.cpp:75:10: note:   no known conversion for argument 1 from ‘std::pair<const int, LRUCache::Node*>’ to ‘int*’
+solution.cpp: In member function ‘void LRUCache::putToFront(int*)’:
+solution.cpp:79:18: error: request for member ‘prev’ in ‘* cur’, which is of non-class type ‘int’
+         if (cur->prev)
+                  ^~~~
+solution.cpp:80:18: error: request for member ‘prev’ in ‘* cur’, which is of non-class type ‘int’
+             cur->prev->next = cur->next;
+                  ^~~~
+solution.cpp:80:36: error: request for member ‘next’ in ‘* cur’, which is of non-class type ‘int’
+             cur->prev->next = cur->next;
+                                    ^~~~
+solution.cpp:82:18: error: request for member ‘next’ in ‘* cur’, which is of non-class type ‘int’
+         if (cur->next)
+                  ^~~~
+solution.cpp:83:18: error: request for member ‘next’ in ‘* cur’, which is of non-class type ‘int’
+             cur->next->prev = cur->prev;
+                  ^~~~
+solution.cpp:83:36: error: request for member ‘prev’ in ‘* cur’, which is of non-class type ‘int’
+             cur->next->prev = cur->prev;
+                                    ^~~~
+solution.cpp:85:14: error: request for member ‘next’ in ‘* cur’, which is of non-class type ‘int’
+         cur->next = head;
+              ^~~~
+solution.cpp:88:26: error: cannot convert ‘int*’ to ‘LRUCache::Node*’ in assignment
+             head->prev = cur;
+                          ^~~
+solution.cpp:89:14: error: request for member ‘prev’ in ‘* cur’, which is of non-class type ‘int’
+         cur->prev = nullptr;
+              ^~~~
