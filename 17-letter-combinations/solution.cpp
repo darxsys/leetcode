@@ -14,32 +14,32 @@ public:
     vector<string> letterCombinations(string digits) {
         if (digits == "")
             return vector<string>();
-        
+
         vector<string> sol;
         
-        string output = "";
+        char* output = new char[digits.size()+1];
         solve(digits, 0, output, sol);
         return sol;
     }
 private:
-    void solve(const string& digits, int i, string& output, vector<string>& sol)
+    void solve(const string& digits, int i, char* output, vector<string>& sol)
     {
         if (i == digits.size())
         {
+            output[i] = '\0';
             sol.emplace_back(output);
             return;
         }
 
-        const string& characters = dictionary[digits[i] - '0' - 2];
-        for (int j = 0; j < characters.size(); ++j)
+        const char* characters = dictionary[digits[i] - '0' - 2];
+        for (int j = 0; characters[j] != '\0'; ++j)
         {
-            string n = output;
-            n.append(&characters[j], 1);
-            solve(digits, i+1, n, sol);
+            output[i] = characters[j];
+            solve(digits, i+1, output, sol);
         }
     }
     
-    string dictionary[8] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    char dictionary[8][5] = {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 };
 
 
