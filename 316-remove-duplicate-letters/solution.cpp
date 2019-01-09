@@ -19,41 +19,28 @@ public:
             return "";
 
         vector<int> num(30, 0);
+        int pos = 0;
+
         int n = s.size();
-        vector<bool> in(n, false);
-
-        char stack[n+1];
-        stack[n] = '\0';
-
         for (int i = 0; i < n; ++i)
         {
             num[s[i] - 'a']++;
         }
 
-        int i = 0;
-        int j = -1;
-
         for (int i = 0; i < n; ++i)
         {
-            char c = s[i];
-            while (!in[c-'a'] && j >= 0 && stack[j] >= c && num[stack[j]-'a'] >= 1)
+            if (s[i] < s[pos]) 
             {
-                in[stack[j] - 'a'] = false;
-                stack[j] = '\0';
-                j--;
+                pos = i;
             }
 
-            if (!in[c-'a'])
-            {
-                stack[++j] = c;
-                in[c-'a'] = true;
-            }
-
-            num[c-'a']--;
+            if (--num[s[i]-'a'] == 0) break;
         }
 
-        stack[++j] = '\0';
-        return string(stack);
+        string next = s.substr(pos+1);
+        next.erase(std::remove(next.begin(), next.end(), s[pos]), next.end());
+
+        return s[pos] + removeDuplicateLetters(next);
     }
 };
 
@@ -64,5 +51,6 @@ int main()
     printf("%s\n", s.removeDuplicateLetters("cbacdcbc").c_str());
     printf("%s\n", s.removeDuplicateLetters("bcabc").c_str());
     printf("%s\n", s.removeDuplicateLetters("abacb").c_str());
+    printf("%s\n", s.removeDuplicateLetters("bbcaac").c_str());
     return 0;
 }
