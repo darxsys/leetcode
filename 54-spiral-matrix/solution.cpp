@@ -58,9 +58,52 @@ private:
     vector<int> dir = {1, -1};
 };
 
+
+class Solution2 {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        if (matrix.size() == 0 || matrix[0].size() == 0) return vector<int>();
+
+        vector<int> res;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int seen[m][n];
+        memset(seen, 0, sizeof(int) * m * n);
+
+        vector<int> hDir = {1, 0, -1, 0};
+        vector<int> vDir = {0, 1, 0, -1};
+
+        int curx = 0;
+        int cury = 0;
+        int di = 0;
+
+        for (int i = 0; i < m * n; ++i)
+        {
+            res.push_back(matrix[curx][cury]);
+            seen[curx][cury] = 1;
+            int nexty = cury + hDir[di];
+            int nextx = curx + vDir[di];
+
+            if (nextx < 0 || nexty < 0 || nextx >= m || nexty >= n || seen[nextx][nexty])
+            {
+                di = (di + 1) % 4;
+                curx += vDir[di];
+                cury += hDir[di];
+            }
+            else
+            {
+                curx = nextx;
+                cury = nexty;
+            }
+        }
+
+        return res;
+    }
+};
+
 int main()
 {
-    Solution s;
+    Solution2 s;
     vector<vector<int> > matrix({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
     s.spiralOrder(matrix);
     printVec(s.spiralOrder(matrix));
