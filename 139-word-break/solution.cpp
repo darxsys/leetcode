@@ -44,6 +44,32 @@ private:
     }
 };
 
+class Solution2 { // DP solution
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        
+        bool dp[n+1];
+        dp[n] = true;
+        
+        for (int i = n -1; i >= 0; --i)
+        {
+            dp[i] = false;
+            for (const string& word: wordDict)
+            {
+                if (word.size() + i <= n && word == s.substr(i, word.size()))
+                {
+                    dp[i] = dp[i + word.size()];
+                    if (dp[i])
+                        break;
+                }
+            }
+        }
+        
+        return dp[0];
+    }
+};
+
 int main()
 {
     Solution s;
