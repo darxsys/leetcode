@@ -62,6 +62,7 @@ private:
     }
 };
 
+
 class Solution2 {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
@@ -126,6 +127,58 @@ private:
     static bool compare(const pair<int, int>& first, const pair<int, int>& second)
     {
         return first.first < second.first;
+    }
+};
+
+class Solution3 {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        if (strs.size() == 0) return vector<vector<string>>();
+
+        int n = strs.size();
+        unordered_map<long long int, vector<string> > res;
+
+        for (int i = 0; i < n; ++i)
+        {
+            string s = strs[i];
+            sort(s.begin(), s.end());
+            long long int h = hash(s);
+
+            if (res.find(h) == res.end())
+            {
+                res[h] = vector<string>({strs[i]});
+            }
+            else
+            {
+                res[h].push_back(strs[i]);
+            }
+        }
+
+        vector<vector<string>> solution;
+        for (const auto& any : res)
+        {
+            solution.push_back(any.second);
+        }        
+
+        return solution;
+    }
+
+private:
+   static long long int hash(const string& s)
+    {
+        long long int mod = 1e9 + 9;
+        int p = 31;
+
+        long long int m = 1;
+        long long int hash = 0;
+
+        for (int i = 0; i < s.size(); ++i)
+        {
+            hash += (m * (s[i] - 'a' + 1)) % mod;
+            m = (m * p) % mod;
+        }
+
+        return hash;
     }
 };
 
