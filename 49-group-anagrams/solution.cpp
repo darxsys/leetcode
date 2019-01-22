@@ -62,6 +62,73 @@ private:
     }
 };
 
+class Solution2 {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        if (strs.size() == 0) return vector<vector<string>>();
+
+        int n = strs.size();
+        vector<pair<int, int>> hashed;
+
+        for (int i = 0; i < n; ++i)
+        {
+            string s = strs[i];
+            sort(s.begin(), s.end());
+            hashed.push_back({hash(s), i});
+        }
+
+        sort(hashed.begin(), hashed.end(), compare);
+
+        vector<string> v;
+        v.push_back(strs[hashed[0].second]);
+        vector<vector<string> > solution;
+        int cur = 0;
+
+        for (int i = 1; i < n; ++i)
+        {
+            if (hashed[i].first == hashed[cur].first)
+            {
+                v.push_back(strs[hashed[i].second]);
+            }
+            else
+            {
+                solution.push_back(v);
+                v = {};
+                v.push_back(strs[hashed[i].second]);
+                cur = i;
+            }
+        }
+
+        solution.push_back(v);
+
+        return solution;
+    }
+
+private:
+   static long long int hash(const string& s)
+    {
+        long long int mod = 1e9 + 9;
+        int p = 31;
+
+        long long int m = 1;
+        long long int hash = 0;
+
+        for (int i = 0; i < s.size(); ++i)
+        {
+            hash += (m * (s[i] - 'a' + 1)) % mod;
+            m = (m * p) % mod;
+        }
+
+        printf("%s %lld\n", s.c_str(), hash);
+        return hash;
+    }
+
+    static bool compare(const pair<int, int>& first, const pair<int, int>& second)
+    {
+        return first.first < second.first;
+    }
+};
+
 void printVec(vector<vector<string> >& vec)
 {
     printf("[\n");
@@ -79,8 +146,8 @@ void printVec(vector<vector<string> >& vec)
 
 int main()
 {
-    vector<string> input({"eat", "tea", "tan", "ate", "nat", "bat"});
-    Solution s;
+    vector<string> input({"tea","and","ace","ad","eat","dans"});
+    Solution2 s;
 
     vector<vector<string> > out = s.groupAnagrams(input);
     printVec(out);
