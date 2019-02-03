@@ -22,7 +22,7 @@ public:
 
         if (n > m) return -1;
 
-        for (int i = 0; i < m; ++i)
+        for (int i = 0; i <= m-n; ++i)
         {
             int j = 0;
             for (; j < n; ++j)
