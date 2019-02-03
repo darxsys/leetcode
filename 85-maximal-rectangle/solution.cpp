@@ -53,9 +53,61 @@ public:
     }
 };
 
+class Solution2 {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+
+        vector<int> heights(n, 0);
+        vector<int> left(n, 0);
+        vector<int> right(n, n);
+
+
+        int ret = 0;
+
+        for (int i = 0; i < m; ++i)
+        {
+            int left0 = -1;
+
+            for (int j = 0; j < n; ++j)
+            {
+                if (matrix[i][j] == '1')
+                {
+                    heights[j]++;
+                    left[j] = max(left[j], left0+1);
+                }
+                else
+                {
+                    heights[j] = 0;
+                    left0 = j;
+                    left[j] = 0;
+                }
+            }
+
+            int right0 = n;
+            for (int j = n - 1; j >= 0; --j)
+            {
+                if (matrix[i][j] == '1')
+                {
+                    right[j] = min(right[j], right0-1);
+                    ret = max(ret, heights[j] * (right[j] - left[j] + 1));
+                }
+                else
+                {
+                    right0 = j;
+                    right[j] = n;
+                }
+            }
+        }
+
+        return ret;
+    }
+};
+
 int main()
 {
-    Solution s;
+    Solution2 s;
     vector<vector<char>> matrix = {
               {'1','0','1','0','0'},
               {'1','0','1','1','1'},
