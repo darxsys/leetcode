@@ -37,11 +37,11 @@ public:
 private:
     bool find(vector<vector<char>>& board, string word, int i, int j, int index)
     {
-        if (index == word.size()) return true;
 
         if (i < 0 || i >= board.size()) return false;
         if (j < 0 || j >= board[0].size()) return false;
         if (board[i][j] != word[index]) return false;
+        if (index == word.size()-1) return true;
 
 
         char c = board[i][j];
