@@ -19,7 +19,6 @@ public:
         deque<int> q;
 
         int num_words = wordList.size();
-        vector<int> visited(num_words, 0);
         unordered_map<string, int> dictionary;
 
         for (int i = 0; i < num_words; ++i)
@@ -40,7 +39,7 @@ public:
                 if (dictionary.find(beginWord) != dictionary.end())
                 {
                     q.push_back(dictionary[beginWord]);
-                    visited[dictionary[beginWord]] = 1;
+                    dictionary.erase(dictionary.find(beginWord));
                 } 
             }
 
@@ -69,10 +68,10 @@ public:
                         if (k == c) continue;
 
                         cur[j] = k;
-                        if (dictionary.find(cur) != dictionary.end() && !visited[dictionary[cur]])
+                        if (dictionary.find(cur) != dictionary.end())
                         {
                             q.push_back(dictionary[cur]);
-                            visited[dictionary[cur]] = 1;
+                            dictionary.erase(dictionary.find(cur));
                         }
                     }
 
