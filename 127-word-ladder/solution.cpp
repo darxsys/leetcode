@@ -29,20 +29,23 @@ public:
 
         int dist = 0;
         int size = beginWord.size();
+        char buf[size+1];
+        strcpy(buf, beginWord.c_str());
         for (int i = 0; i < size; ++i)
         {
             for (char j = 'a'; j <= 'z'; ++j)
             {
                 if (j == beginWord[i]) continue;
 
-                string s = beginWord.substr(0, i) + j + beginWord.substr(i+1, size-i);
-                // printf("%s\n", s.c_str());
-                if (dictionary.find(s) != dictionary.end())
+                buf[i] = j;
+                if (dictionary.find(buf) != dictionary.end())
                 {
-                    q.push_back(dictionary[s]);
-                    visited[dictionary[s]] = 1;
+                    q.push_back(dictionary[buf]);
+                    visited[dictionary[buf]] = 1;
                 }
-            }            
+            }
+
+            buf[i] = beginWord[i];            
         }
 
         while (!q.empty())
@@ -59,21 +62,24 @@ public:
                     return dist+1;
                 }
 
+                strcpy(buf, cur.c_str());
                 for (int j = 0; j < size; ++j)
                 {
                     for (char k = 'a'; k <= 'z'; ++k)
                     {
                         if (k == cur[j]) continue;
 
-                        string s = cur.substr(0, j) + k + cur.substr(j+1, size-j);
+                        buf[j] = k;
                         // printf("%s\n", s.c_str());
 
-                        if (dictionary.find(s) != dictionary.end() && !visited[dictionary[s]])
+                        if (dictionary.find(buf) != dictionary.end() && !visited[dictionary[buf]])
                         {
-                            q.push_back(dictionary[s]);
-                            visited[dictionary[s]] = 1;
+                            q.push_back(dictionary[buf]);
+                            visited[dictionary[buf]] = 1;
                         }
-                    }         
+                    }
+
+                    buf[j] = cur[j];         
                 }
             }
         }
