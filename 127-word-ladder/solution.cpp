@@ -29,23 +29,22 @@ public:
 
         int dist = 0;
         int size = beginWord.size();
-        char buf[size+1];
-        strcpy(buf, beginWord.c_str());
         for (int i = 0; i < size; ++i)
         {
+            char c = beginWord[i];
             for (char j = 'a'; j <= 'z'; ++j)
             {
-                if (j == beginWord[i]) continue;
+                if (j == c) continue;
 
-                buf[i] = j;
-                if (dictionary.find(buf) != dictionary.end())
+                beginWord[i] = j;
+                if (dictionary.find(beginWord) != dictionary.end())
                 {
-                    q.push_back(dictionary[buf]);
-                    visited[dictionary[buf]] = 1;
-                }
+                    q.push_back(dictionary[beginWord]);
+                    visited[dictionary[beginWord]] = 1;
+                } 
             }
 
-            buf[i] = beginWord[i];            
+            beginWord[i] = c;            
         }
 
         while (!q.empty())
@@ -54,7 +53,7 @@ public:
             int n = q.size();
             for (int i = 0; i < n; ++i)
             {
-                const string& cur = wordList[q.front()];
+                string& cur = wordList[q.front()];
                 q.pop_front();
 
                 if (cur == endWord)
@@ -62,24 +61,22 @@ public:
                     return dist+1;
                 }
 
-                strcpy(buf, cur.c_str());
                 for (int j = 0; j < size; ++j)
                 {
+                    char c = cur[j];
                     for (char k = 'a'; k <= 'z'; ++k)
                     {
-                        if (k == cur[j]) continue;
+                        if (k == c) continue;
 
-                        buf[j] = k;
-                        // printf("%s\n", s.c_str());
-
-                        if (dictionary.find(buf) != dictionary.end() && !visited[dictionary[buf]])
+                        cur[j] = k;
+                        if (dictionary.find(cur) != dictionary.end() && !visited[dictionary[cur]])
                         {
-                            q.push_back(dictionary[buf]);
-                            visited[dictionary[buf]] = 1;
+                            q.push_back(dictionary[cur]);
+                            visited[dictionary[cur]] = 1;
                         }
                     }
 
-                    buf[j] = cur[j];         
+                    cur[j] = c;       
                 }
             }
         }
