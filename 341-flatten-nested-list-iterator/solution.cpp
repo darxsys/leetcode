@@ -64,12 +64,7 @@ public:
     }
 
     bool hasNext() {
-        while(i >= curVec->size() && !save.empty())
-        {
-            curVec = save.top().first;
-            i = save.top().second;
-            save.pop();
-        } 
+        if (!FindNonEmpty()) return false;
         
         if (i >= curVec->size()) return false;
 
@@ -82,27 +77,33 @@ public:
                 save.push({curVec, ++i});
                 curVec = &cur->getList();
                 i = 0;
-                cur = &curVec->at(i);
             }
             else
             {
                 ++i;
-                while ((i >= curVec->size()) && !save.empty())
-                {
-                    curVec = save.top().first;
-                    i = save.top().second;
-                    save.pop();
-                }
-
-                if (i >= curVec->size()) return false;
-                cur = &curVec->at(i);
+                if (!FindNonEmpty()) return false;
             }
+
+            cur = &curVec->at(i);
         }
 
         return i < curVec->size();
     }
 
 private:
+    bool FindNonEmpty()
+    {
+         while ((i >= curVec->size()) && !save.empty())
+        {
+            curVec = save.top().first;
+            i = save.top().second;
+            save.pop();
+        }
+
+        if (i >= curVec->size()) return false;
+        return true;
+    }
+
     const vector<NestedInteger> *curVec = nullptr;
     int i;
     stack<pair<const vector<NestedInteger>*, int> > save;
