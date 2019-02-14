@@ -30,27 +30,23 @@ public:
             if (next == cur)
             {
                 cur_len++;
-                sol = max(sol, cur_len);
                 seen++;
             }
             else if (next == prev)
             {
                 cur_len++;
-                sol = max(sol, cur_len);
                 seen = 1;
-                int a = cur;
-                cur = next;
-                prev = a;
+                swap(cur, prev);
             }
             else
             {
-               cur_len = seen + 1;
-               seen = 1;
-               sol = max(sol, cur_len);
-               int a = cur;
-               cur = next;
-               prev = a; 
+                cur_len = seen + 1;
+                seen = 1;
+                prev = cur; 
+                cur = next;
             }
+
+            sol = max(sol, cur_len);
         }
 
         return sol;
