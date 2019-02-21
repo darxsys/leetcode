@@ -16,52 +16,46 @@ using namespace std;
 class Solution {
 public:
     vector<vector<int>> verticalOrder(TreeNode* root) {
-        if (root == nullptr) return vector<vector<int>>();
-        
-        unordered_map<int, vector<pair<int, int>>> s;
-        int m = 0;
-        int M = 0;
-        
-        solve(root, s, m, M, 0, 0);
         vector<vector<int>> sol;
-        for (int i = m; i <= M; ++i)
+        if (root == nullptr) return sol;
+        
+        unordered_map<int, vector<int>> m;
+        deque<pair<int, TreeNode*>> q;
+        q.push_back({0, root});
+        int left = 0;
+        int right = 0;
+        while(!q.empty())
         {
-            int n = s[i].size();
-            vector<int> v(n);
-            stable_sort(s[i].begin(), s[i].end(), Compare);
-            for (int j = 0; j < n; ++j)
+            int n = q.size();
+            for (int i = 0; i < n; ++i)
             {
-                v[j] = s[i][j].second;
+                int d = q.front().first;
+                TreeNode *cur = q.front().second;
+                q.pop_front();
+                
+                m[d].push_back(cur->val);
+                
+                if (cur->left != nullptr)
+                {
+                    q.push_back({d-1, cur->left});
+                    left = min(left, d-1);
+                }
+                if (cur->right != nullptr)
+                {
+                    q.push_back({d+1, cur->right});
+                    right = max(right, d+1);
+                }
             }
-            
-            sol.emplace_back(v);
         }
         
+        for (int i = left; i <= right; ++i)
+        {
+            sol.emplace_back(m[i]);
+        }
+
         return sol;
     }
-private:
-    void solve(TreeNode *root, unordered_map<int, vector<pair<int, int>>> &s, int &m, int &M, int cur, int d)
-    {
-        if (root == nullptr) return;
-        
-        if (s.find(cur) == s.end())
-            s[cur] = {{d, root->val}};
-        else
-            s[cur].push_back({d, root->val});
-        
-        m = min(m, cur);
-        M = max(M, cur);
-        
-        solve(root->left, s, m, M, cur-1, d+1);
-        solve(root->right, s, m, M, cur+1, d+1);
-    }
-    
-    static bool Compare(const pair<int, int> &first, const pair<int, int> &second)
-    {
-        return first.first < second.first;
-    }
 };
-
 
 int main()
 {
