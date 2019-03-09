@@ -13,6 +13,47 @@
 #include <unordered_set>
 using namespace std;
 
+class Solution2 {
+public:
+    bool isAlienSorted(vector<string>& words, string order) {
+        if (words.empty()) return true;
+
+        int n = order.size();
+        for (int i = 0; i < n; ++i)
+        {
+            ordinals[order[i]] = i;
+        }
+
+        for (int i = 0; i < words.size(); ++i)
+        {
+            if (!smaller(words[i], words[j])) return false;
+        }
+
+        return true;
+    }
+private:
+    bool smaller(const string& first, const string& second)
+    { 
+        int i = 0;
+        int j = 0;
+        int m = first.size();
+        int n = second.size();
+
+        while (i < m && j < n)
+        {
+            if (ordinals[first[i]] > ordinals[second[j]]) return false;
+            i++;
+            j++;
+        }
+
+        if (j == n && i < m) return false;
+
+        return true;
+    }
+
+    unordered_map<char, int> ordinals;
+};
+
 class Solution {
 public:
     bool isAlienSorted(vector<string>& words, string order) {
