@@ -13,6 +13,65 @@
 #include <unordered_set>
 using namespace std;
 
+class Solution2 {
+public:
+    vector<int> exclusiveTime(int n, vector<string>& logs) {
+        if (logs.empty() || n == 0) return vector<int>();
+        vector<int> ret(n, 0);
+
+        stack<pair<int, int>> times;
+        int i = 0;
+        int last_start = -1;
+        int last_end = -1;
+        while (i < logs.size())
+        {
+            string& cur = logs[i];
+            int first_c = cur.find(":");
+            int second_c = cur.find(":", first_c+1);
+
+            int func = stoi(cur.substr(0, first_c));
+            string start = cur.substr(first_c+1, second_c-first_c-1);
+            int timestamp = stoi(cur.substr(second_c+1)); 
+
+            if (start == "start")
+            {
+                if (!times.empty())
+                {
+                    pair<int, int>& prev = times.top();
+                    ret[prev.first] += timestamp - max(last_start, last_end);
+
+                    if (last_end >= last_start)
+                        ret[prev.first]--;
+                }
+
+                last_start = timestamp;
+                times.push({func, timestamp});
+            }
+            else
+            {
+                pair<int, int> top = times.top();
+                times.pop();
+
+                if (last_end < last_start)
+                {
+                    ret[top.first] += timestamp - last_start + 1;
+                }
+                else
+                {
+                    ret[top.first] += timestamp - last_end;
+                }
+
+                last_end = timestamp;
+            }
+
+            i++;         
+        }
+
+        return ret;
+     }
+};
+
+
 class Solution {
 public:
     vector<int> exclusiveTime(int n, vector<string>& logs) {
@@ -21,7 +80,7 @@ public:
         ret = vector<int>(n, 0);
 
         int i = 0;
-        while (i < n)
+        while (i < logs.size())
             recurse(i, n, ret, logs);
         return ret;
     }
@@ -86,7 +145,7 @@ private:
 
 int main()
 {
-    Solution s;
+    Solution2 s;
     vector<string> in = {"0:start:0",  "1:start:2", "1:end:5", "0:end:6"};
     //s.exclusiveTime(2, in);
 
