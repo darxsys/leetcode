@@ -50,6 +50,49 @@ private:
     }
 };
 
+class Solution2 { // stack approach
+public:
+    bool isValidBST(TreeNode* root) {
+        if (root==nullptr) return true;
+        
+        stack<TreeNode*> s;
+        list<TreeNode*> low;
+        list<TreeNode*> high;
+        s.push(root);
+        low.push_back(nullptr);
+        high.push_back(nullptr);
+        
+        while (!s.empty())
+        {
+            TreeNode* cur = s.top();
+            s.pop();
+            TreeNode* l = low.back();
+            low.pop_back();
+            TreeNode* h = high.back();
+            high.pop_back();
+            
+            if (l && cur->val <= l->val) return false;
+            if (h && cur->val >= h->val) return false;
+            
+            if (cur->right)
+            {
+                s.push(cur->right);
+                low.push_back(cur);
+                high.push_back(h);
+            }
+            
+            if (cur->left)
+            {
+                s.push(cur->left);
+                low.push_back(l);
+                high.push_back(cur);
+            }
+        }
+        
+        return true;
+    }
+};
+
 int main()
 {
     return 0;
