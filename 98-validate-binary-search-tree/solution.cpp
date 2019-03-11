@@ -93,6 +93,43 @@ public:
     }
 };
 
+class Solution3 {
+public:
+    bool isValidBST(TreeNode* root) {
+        if (root==nullptr) return true;
+        
+        stack<TreeNode*> s;
+        TreeNode* lastseen = nullptr;
+        
+        TreeNode* cur = root;
+        while (cur)
+        {
+            s.push(cur);
+            cur = cur->left;
+        }
+        
+        while(!s.empty())
+        {
+            cur = s.top();
+            if (lastseen && lastseen->val >= cur->val) return false;
+            lastseen = cur;
+            s.pop();
+            
+            if (cur->right)
+            {
+                cur = cur->right;
+                while(cur)
+                {
+                    s.push(cur);
+                    cur = cur->left;
+                }
+            }
+        }
+        
+        return true;
+    }
+};
+
 int main()
 {
     return 0;
