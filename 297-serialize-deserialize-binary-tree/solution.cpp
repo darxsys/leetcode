@@ -15,6 +15,71 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
 };
 
+class Codec2 {
+public:
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        if (root == nullptr)
+            return "";
+        
+        string ret = "";
+        stack<TreeNode*> s;
+        s.push(root);
+        
+        while (!s.empty())
+        {
+            TreeNode* cur = s.top();
+            s.pop();
+            
+            if (cur == nullptr)
+                ret += ret.empty() ? "N" : ",N";
+            else
+                ret += ret.empty() ? to_string(cur->val) : ',' + to_string(cur->val);
+            
+            if (cur)
+            {
+                s.push(cur->right);
+                s.push(cur->left);
+            }
+        }
+            
+        return ret;
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        if (data == "")
+            return nullptr;
+
+        stringstream datastream(data);
+        TreeNode* root = nullptr;
+        stack<TreeNode**> s;
+        s.push(&root);
+        string token;
+        
+        while (!s.empty())
+        {
+            TreeNode** cur = s.top();
+            s.pop();
+            getline(datastream, token, ',');
+            
+            if (token == "N")
+                *cur = nullptr;
+            else
+                *cur = new TreeNode(stoi(token));
+            
+            if (*cur)
+            {
+                s.push(&(*cur)->right);
+                s.push(&(*cur)->left);
+            }
+        }
+        
+        return root;
+    }
+};
+
+
 class Codec {
 public:
     // Encodes a tree to a single string.
@@ -25,7 +90,7 @@ public:
         string s = "";
 
         _serialize(root, s);
-        return s.substr(0, s.size()-1);
+        return s;
     }
 
     // Decodes your encoded data to tree.
@@ -45,7 +110,8 @@ private:
             return;
         }
 
-        s.append(to_string(cur->val) + ",");
+        s.append(to_string(cur->val));
+        s.append(",");
 
         _serialize(cur->left, s);
         _serialize(cur->right, s);
