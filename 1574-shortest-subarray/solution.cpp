@@ -5,23 +5,18 @@ public:
         
         int n = arr.size();
         
-        // build left
         int left = 0;
-        while (left < n-1 && arr[left] <= arr[left+1]) {
-            left++;
-        }
-        
-        if (left == n-1) return 0;
-        
         int right = n-1;
-        while (right > 0 && arr[right] >= arr[right-1]) {
-            right--;
+        
+        while (left < right) {
+            if (arr[left] <= arr[left+1]) left++;
+            else if (arr[right] >= arr[right-1]) right--;
+            else break;
         }
         
-        if (right == 0) return 0;
+        if (left >= right) return 0;
         
         int result = n-1;
-        
         int curLeft = 0;
         int curRight = right;
 
@@ -47,4 +42,4 @@ public:
         
         return result;
     }
-};
+};;
