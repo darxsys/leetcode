@@ -76,6 +76,7 @@ private:
                 if (recurse(nums, target, cur, sums)) return true;
                 sums[i] -= v;
             }
+            if (sums[i] == 0) break;
         }
         
         return false;
