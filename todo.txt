@@ -1,1 +1,2 @@
 https://leetcode.com/problems/longest-increasing-subsequence/ - do with patience sort
+https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solution/ - dp solution
