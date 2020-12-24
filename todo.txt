@@ -1,3 +1,4 @@
 https://leetcode.com/problems/longest-increasing-subsequence/ - do with patience sort
 https://leetcode.com/problems/partition-to-k-equal-sum-subsets/solution/ - dp solution
 https://leetcode.com/problems/cheapest-flights-within-k-stops/ - dijkstra/bellman ford/bfs
+https://leetcode.com/problems/longest-valid-parentheses/ - two pointers
