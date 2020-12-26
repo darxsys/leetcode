@@ -43,6 +43,30 @@ private:
     }
 };
 
+class Solution2 {
+public:
+    int maxCoins(vector<int>& nums) {        
+        int n = nums.size();
+        vector<int> padded(n+2, 0);
+        padded[0] = padded[n+1] = 1;
+        vector<vector<int>> dp(n+2, vector<int>(n+2, 0));
+        
+        for (int i = 1; i < n + 1; ++i) {
+            padded[i] = nums[i-1];
+        }
+        
+        for (int i = n; i > 0; --i) {
+            for (int j = i; j < n+1; ++j) {
+                for (int k = i; k <= j; ++k) {
+                    dp[i][j] = max(dp[i][j], dp[i][k-1] + dp[k+1][j] + padded[k] * padded[i-1] * padded[j+1]);                  
+                }
+            }
+        }
+        
+        return dp[1][n];
+    }
+};
+
 int main()
 {
     vector<int> nums({3, 1, 5, 8});
