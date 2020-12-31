@@ -24,17 +24,10 @@ private:
         auto left = recurse(root->left);
         auto right = recurse(root->right);
         
-        if (left.first)
-            result = max(result, (double) left.second / left.first);
-        
-        if (right.first)
-            result = max(result, (double) right.second / right.first);
-        
         pair<int, int> ret(left.first + 1 + right.first, 
                               left.second + right.second + root->val);
         
         result = max(result, (double) ret.second / ret.first);
-        
         return ret;
     }
 
